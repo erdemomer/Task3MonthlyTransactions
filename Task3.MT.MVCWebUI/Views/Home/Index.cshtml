@@ -1,0 +1,67 @@
+﻿@model Task3.MT.MVCWebUI.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Categories</th>
+            <th scope="col">Amuounts</th>
+            <th>Add</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.Categories)
+        {
+            <tr>
+
+                <td>
+                    <a asp-action="Index" asp-controller="Transaction" asp-route-Id="@item.Id">
+                        <span style="color:black">
+                            <b>
+                                <i>
+                                    @if (item.Icon != null)
+                                    {
+                                        <code>@Html.Raw(item.Icon)</code>
+
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-hockey-puck fa-2x" style="color:black"></i>
+                                    }
+                                    @item.Name
+                                </i>
+                            </b>
+                        </span>
+                    </a>
+                </td>
+                @if (@Model.Transactions.Where(x => x.CategoryId == item.Id && x.TransactionType == true).Sum(x => x.Amount) >= Model.Transactions.Where(x => x.CategoryId == item.Id && x.TransactionType == false).Sum(x => x.Amount))
+                {
+                    <td>€ <a asp-action="Index" asp-controller="Transaction" asp-route-Id="@item.Id"><span style="color: green">@(Model.Transactions.Where(x => x.CategoryId == item.Id && x.TransactionType == true).Sum(x => x.Amount) - Model.Transactions.Where(x => x.CategoryId == item.Id && x.TransactionType == false).Sum(x => x.Amount))</span></a></td>
+                }
+                else
+                {
+                    <td>€ <a asp-action="Index" asp-controller="Transaction" asp-route-Id="@item.Id"><span style="color: red">@(Model.Transactions.Where(x => x.CategoryId == item.Id && x.TransactionType == false).Sum(x => x.Amount) - Model.Transactions.Where(x => x.CategoryId == item.Id && x.TransactionType == true).Sum(x => x.Amount))</span></a></td>
+                }
+                <td><a asp-action="Create" asp-controller="Transaction"><i class="fas fa-edit fa-2x" style="color:dodgerblue;"></i></a></td>
+            </tr>
+        }
+
+        <tr>
+
+            <td><b>Total:</b></td>
+            @if (Model.Transactions.Where(x => x.TransactionType == true).Sum(x => x.Amount) >= Model.Transactions.Where(x => x.TransactionType == false).Sum(x => x.Amount))
+            {
+                <td>€ <span style="color: green">@(Model.Transactions.Where(x => x.TransactionType == true).Sum(x => x.Amount) - Model.Transactions.Where(x => x.TransactionType == false).Sum(x => x.Amount))</span></td>
+            }
+            else
+            {
+                <td>€ <span style="color: red">@(Model.Transactions.Where(x => x.TransactionType == false).Sum(x => x.Amount) - Model.Transactions.Where(x => x.TransactionType == true).Sum(x => x.Amount))</span></td>
+            }
+        </tr>
+
+    </tbody>
+</table>

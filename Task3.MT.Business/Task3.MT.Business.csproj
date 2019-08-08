@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Task3.MT.DataAccess\Task3.MT.DataAccess.csproj" />
+    <ProjectReference Include="..\Task3.MT.Entities\Task3.MT.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
